@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>APRO SLOT Cabinet</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="cabinet-stage">
+      <section class="cabinet" aria-label="時計機構モチーフのオリジナルA+RTパチスロ筐体">
+        <img
+          class="cabinet-art cabinet-art--off"
+          src="./web/public/cabinet-background-lamps-off-v1.png"
+          alt="紫、銀、黒を基調にした時計機構モチーフのパチスロ筐体"
+          width="838"
+          height="1876"
+          draggable="false"
+        />
+        <div class="side-lamp-rainbow" aria-hidden="true"></div>
+
+        <section class="reel-window" aria-label="3リール表示窓">
+          <div class="reel" aria-label="左リール">
+            <span class="reel-symbol"><img class="symbol-image" src="./web/public/symbols/symbol-clock.png" alt="紫時計" /></span>
+            <span class="reel-symbol"><img class="symbol-image" src="./web/public/symbols/symbol-bell.png" alt="ベル" /></span>
+            <span class="reel-symbol"><img class="symbol-image" src="./web/public/symbols/symbol-replay.png" alt="リプレイ" /></span>
+          </div>
+          <div class="reel" aria-label="中リール">
+            <span class="reel-symbol"><img class="symbol-image" src="./web/public/symbols/symbol-cherry.png" alt="チェリー" /></span>
+            <span class="reel-symbol"><img class="symbol-image" src="./web/public/symbols/symbol-seven.png" alt="赤7" /></span>
+            <span class="reel-symbol"><img class="symbol-image" src="./web/public/symbols/symbol-clock.png" alt="紫時計" /></span>
+          </div>
+          <div class="reel" aria-label="右リール">
+            <span class="reel-symbol"><img class="symbol-image" src="./web/public/symbols/symbol-replay.png" alt="リプレイ" /></span>
+            <span class="reel-symbol"><img class="symbol-image" src="./web/public/symbols/symbol-bar.png" alt="BAR" /></span>
+            <span class="reel-symbol"><img class="symbol-image" src="./web/public/symbols/symbol-gear.png" alt="歯車" /></span>
+          </div>
+        </section>
+
+        <section class="cabinet-controls" aria-label="筐体操作部">
+          <button class="control-part max-bet" id="maxBet" type="button" aria-label="MAX BETボタン">
+            <img src="./web/public/control-max-bet-v1.png" alt="" draggable="false" />
+          </button>
+          <button class="control-part lever" id="lever" type="button" aria-label="スタートレバー">
+            <img class="lever-base" src="./web/public/control-lever-base-v3.png" alt="" draggable="false" />
+            <img class="lever-knob" src="./web/public/control-lever-knob-v3.png" alt="" draggable="false" />
+          </button>
+          <div class="stop-buttons" role="group" aria-label="リール停止ボタン">
+            <button class="control-part stop-button is-lit" type="button" aria-label="左リール停止">
+              <img src="./web/public/control-stop-button-v1.png" alt="" draggable="false" />
+            </button>
+            <button class="control-part stop-button is-lit" type="button" aria-label="中リール停止">
+              <img src="./web/public/control-stop-button-v1.png" alt="" draggable="false" />
+            </button>
+            <button class="control-part stop-button is-lit" type="button" aria-label="右リール停止">
+              <img src="./web/public/control-stop-button-v1.png" alt="" draggable="false" />
+            </button>
+          </div>
+        </section>
+      </section>
+    </main>
+    <script src="./app.js"></script>
+  </body>
+</html>

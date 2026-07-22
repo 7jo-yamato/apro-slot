@@ -1,0 +1,302 @@
+:root {
+  color-scheme: dark;
+  --stage: #08080b;
+  --cabinet-width: min(500px, calc(100vw - 24px));
+  --reel-symbol-scale: 82%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  background: var(--stage);
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(circle at 50% 12%, rgb(103 48 145 / 20%), transparent 31rem),
+    linear-gradient(145deg, #050507 0%, #111018 50%, #050507 100%);
+  font-family: Inter, "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
+}
+
+button {
+  font: inherit;
+}
+
+.cabinet-stage {
+  display: grid;
+  justify-items: center;
+  min-height: 100vh;
+  padding: 16px 20px 32px;
+  overflow-x: hidden;
+}
+
+.cabinet {
+  position: relative;
+  isolation: isolate;
+  width: var(--cabinet-width);
+  aspect-ratio: 838 / 1876;
+  filter: drop-shadow(0 34px 44px rgb(0 0 0 / 70%));
+}
+
+.cabinet-art {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* サイドランプ：マスクと合成のみを担当。流れる虹は ::before 側 */
+.side-lamp-rainbow {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask: url("./web/public/side-lamp-mask-v1.png") center / 100% 100% no-repeat;
+  mask: url("./web/public/side-lamp-mask-v1.png") center / 100% 100% no-repeat;
+  mix-blend-mode: screen;
+}
+
+/*
+ * 虹本体。高さを親の200%に固定することで、translate の % 基準と
+ * background-size の基準を一致させ、ループの継ぎ目を消している。
+ * 色は OKLCH の等明度・等彩度・色相30°刻み。
+ * 明るさ／鮮やかさの調整は L(75%) と C(0.17) の2値だけ触ればよい。
+ */
+.side-lamp-rainbow::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 200%;
+  background: linear-gradient(
+    to bottom,
+    oklch(75% 0.17 25) 0%,
+    oklch(75% 0.17 55) 8.33%,
+    oklch(75% 0.17 85) 16.66%,
+    oklch(75% 0.17 115) 25%,
+    oklch(75% 0.17 145) 33.33%,
+    oklch(75% 0.17 175) 41.66%,
+    oklch(75% 0.17 205) 50%,
+    oklch(75% 0.17 235) 58.33%,
+    oklch(75% 0.17 265) 66.66%,
+    oklch(75% 0.17 295) 75%,
+    oklch(75% 0.17 325) 83.33%,
+    oklch(75% 0.17 355) 91.66%,
+    oklch(75% 0.17 385) 100%
+  );
+  background-size: 100% 27.5%; /* 200% × 27.5% = 親の55% = 虹1周期 */
+  background-repeat: repeat-y;
+  animation: side-lamp-flow 2.6s linear infinite paused;
+}
+
+.cabinet.is-bonus .side-lamp-rainbow {
+  opacity: 0.96;
+}
+
+.cabinet.is-bonus .side-lamp-rainbow::before {
+  animation-play-state: running;
+}
+
+@keyframes side-lamp-flow {
+  from {
+    translate: 0 0;
+  }
+
+  to {
+    translate: 0 -27.5%; /* 親の55% = タイル1枚分 */
+  }
+}
+
+.reel-window {
+  position: absolute;
+  top: 28.45%;
+  left: 16.15%;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: 67.7%;
+  height: 15.45%;
+  overflow: hidden;
+  border: max(2px, calc(var(--cabinet-width) * 0.007)) solid #0b0b0d;
+  border-radius: calc(var(--cabinet-width) * 0.012);
+  background: #e7e7e8;
+  box-shadow:
+    0 0 0 max(1px, calc(var(--cabinet-width) * 0.004)) #9b7740,
+    inset 0 0 calc(var(--cabinet-width) * 0.025) rgb(0 0 0 / 28%);
+}
+
+.reel {
+  display: grid;
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  min-width: 0;
+  overflow: hidden;
+  background: linear-gradient(90deg, #c9c9ca, #f8f8f8 14% 86%, #c7c7c9);
+}
+
+.reel + .reel {
+  border-left: max(2px, calc(var(--cabinet-width) * 0.008)) solid #151519;
+}
+
+.reel-symbol {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border-bottom: 1px solid rgb(24 22 26 / 13%);
+}
+
+.reel-symbol:last-child {
+  border-bottom: 0;
+}
+
+.symbol-image {
+  display: block;
+  width: var(--reel-symbol-scale);
+  height: var(--reel-symbol-scale);
+  object-fit: contain;
+  user-select: none;
+
+  translate: 0 -18px; /* 図柄の初期位置を修正*/
+}
+
+.cabinet-controls {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.control-part {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.control-part img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  transition: transform 90ms ease-out, filter 130ms ease, opacity 130ms ease;
+}
+
+.max-bet {
+  top: 52.65%;
+  left: 20.2%;
+  width: 17.7%;
+  aspect-ratio: 505 / 305;
+  border-radius: 50%;
+  filter: drop-shadow(0 calc(var(--cabinet-width) * 0.009) calc(var(--cabinet-width) * 0.008) rgb(0 0 0 / 62%));
+}
+
+.max-bet:active img {
+  transform: translateY(7%) scaleX(0.985) scaleY(0.91);
+  filter: brightness(0.78) contrast(1.08);
+}
+
+.lever {
+  top: 57.6%;
+  left: -1.2%;
+  width: 14.2%;
+  aspect-ratio: 800 / 850;
+  filter: drop-shadow(0 calc(var(--cabinet-width) * 0.01) calc(var(--cabinet-width) * 0.009) rgb(0 0 0 / 68%));
+}
+
+.lever img {
+  position: absolute;
+  inset: 0;
+  transform: scaleX(-1);
+  transform-origin: 65.5% 27.5%;
+}
+
+.lever-base {
+  z-index: 1;
+}
+
+.lever-knob {
+  z-index: 2;
+}
+
+.lever:active .lever-knob {
+  transform: translateY(18%) scaleX(-1);
+  filter: brightness(0.82);
+}
+
+.stop-buttons {
+  position: absolute;
+  top: 58%;
+  left: 31.4%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4.2%;
+  width: 35.7%;
+  height: 3.85%;
+  pointer-events: auto;
+}
+
+/* 左停止ボタン */
+.stop-button:nth-child(1) {
+  translate: -0.75px 4px;
+}
+
+/* 中停止ボタン */
+.stop-button:nth-child(2) {
+  translate: 0 4px;
+}
+
+/* 右停止ボタン */
+.stop-button:nth-child(3) {
+  translate: 3px 4px;
+}
+
+.stop-button {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 16%;
+}
+
+.stop-button img {
+  transition: none;
+}
+
+.stop-button.is-lit img {
+  filter: hue-rotate(215deg) saturate(1.18) brightness(0.96);
+}
+
+.stop-button.is-off img {
+  filter: none;
+}
+
+.control-part:focus-visible {
+  outline: max(2px, calc(var(--cabinet-width) * 0.006)) solid #f3c9ff;
+  outline-offset: max(2px, calc(var(--cabinet-width) * 0.005));
+  box-shadow: 0 0 calc(var(--cabinet-width) * 0.03) #a94cff;
+}
+
+@media (max-width: 430px) {
+  .cabinet-stage {
+    padding: 10px 6px 24px;
+  }
+}
