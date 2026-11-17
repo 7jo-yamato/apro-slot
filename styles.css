@@ -139,11 +139,18 @@ button {
 }
 
 .reel {
-  display: grid;
-  grid-template-rows: repeat(3, minmax(0, 1fr));
+  position: relative;
   min-width: 0;
   overflow: hidden;
   background: linear-gradient(90deg, #c9c9ca, #f8f8f8 14% 86%, #c7c7c9);
+}
+
+.reel-strip {
+  display: grid;
+  grid-template-rows: repeat(25, minmax(0, 1fr));
+  width: 100%;
+  height: calc(100% * 25 / 3);
+  will-change: transform;
 }
 
 .reel + .reel {
@@ -171,6 +178,25 @@ button {
   user-select: none;
 
   translate: 0 -18px; /* 図柄の初期位置を修正*/
+}
+
+/* 透過余白も含めて拡大し、狭いリール枠でも図柄を上端で切らない。 */
+.symbol-image:is([src$="/symbol-seven.png"], [src$="/symbol-bar.png"]) {
+  scale: 1.2;
+  translate: 0 -8%;
+}
+
+.symbol-image[src$="/symbol-bar.png"] {
+  scale: 1.5;
+  translate: 0 -25%;
+}
+
+.symbol-image[src$="/symbol-seven.png"] {
+  translate: 0 -25%;
+}
+
+.symbol-image[src$="/symbol-clock.png"] {
+  translate: 0 -22%;
 }
 
 .cabinet-controls {
@@ -285,8 +311,58 @@ button {
   filter: hue-rotate(215deg) saturate(1.18) brightness(0.96);
 }
 
+.debug-panel {
+  position: fixed;
+  top: 32px;
+  left: max(20px, calc(50% - 550px));
+  width: 260px;
+  padding: 18px;
+  color: #e9e1ee;
+  background: #19131f;
+  border: 1px solid #776582;
+  border-radius: 12px;
+  z-index: 5;
+}
+
+.debug-panel h2 { margin: 0 0 20px; font-size: 18px; }
+.debug-panel h3 { font-size: 15px; }
+
+.slip-readout { margin: 0; }
+.slip-readout div {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #42364b;
+}
+.slip-readout dd { margin: 0; font-variant-numeric: tabular-nums; color: #dfb9ff; }
+
+.debug-controls {
+  min-width: 0;
+  margin: 0 0 20px;
+  padding: 12px;
+  color: #ddd;
+  border: 1px solid #776582;
+  border-radius: 8px;
+}
+
+.debug-controls select {
+  margin-left: 8px;
+  padding: 6px 10px;
+  font: inherit;
+}
+
+.debug-controls p {
+  font-size: 13px;
+  line-height: 1.6;
+}
+
 .stop-button.is-off img {
   filter: none;
+}
+
+.stop-button:disabled,
+.lever:disabled {
+  cursor: default;
 }
 
 .control-part:focus-visible {
@@ -298,5 +374,13 @@ button {
 @media (max-width: 430px) {
   .cabinet-stage {
     padding: 10px 6px 24px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .debug-panel {
+    position: static;
+    width: min(460px, calc(100% - 24px));
+    margin: 16px auto 0;
   }
 }

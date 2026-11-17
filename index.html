@@ -7,6 +7,31 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
+    <aside class="debug-panel" aria-label="遊技デバッグ">
+      <h2>遊技デバッグ</h2>
+      <fieldset class="debug-controls">
+        <legend>次ゲームの成立役</legend>
+        <label for="forcedRole">小役強制</label>
+        <select id="forcedRole">
+          <option value="random">通常抽選</option>
+          <option value="bell">ベル</option>
+          <option value="replay">リプレイ</option>
+          <option value="cherry">チェリー</option>
+          <option value="gear">歯車</option>
+          <option value="none">ハズレ</option>
+        </select>
+        <p>次の1ゲームだけ成立させます。目押しによる取りこぼしは発生します。</p>
+      </fieldset>
+      <section aria-labelledby="slipHeading">
+        <h3 id="slipHeading">滑りコマ数</h3>
+        <dl class="slip-readout" aria-live="polite">
+          <div><dt>左リール</dt><dd id="slip0">—</dd></div>
+          <div><dt>中リール</dt><dd id="slip1">—</dd></div>
+          <div><dt>右リール</dt><dd id="slip2">—</dd></div>
+        </dl>
+      </section>
+      <p id="gameResult" role="status" aria-live="polite">MAX BETで開始</p>
+    </aside>
     <main class="cabinet-stage">
       <section class="cabinet" aria-label="時計機構モチーフのオリジナルA+RTパチスロ筐体">
         <img
@@ -46,13 +71,13 @@
             <img class="lever-knob" src="./web/public/control-lever-knob-v3.png" alt="" draggable="false" />
           </button>
           <div class="stop-buttons" role="group" aria-label="リール停止ボタン">
-            <button class="control-part stop-button is-lit" type="button" aria-label="左リール停止">
+            <button class="control-part stop-button is-off" type="button" aria-label="左リール停止" disabled>
               <img src="./web/public/control-stop-button-v1.png" alt="" draggable="false" />
             </button>
-            <button class="control-part stop-button is-lit" type="button" aria-label="中リール停止">
+            <button class="control-part stop-button is-off" type="button" aria-label="中リール停止" disabled>
               <img src="./web/public/control-stop-button-v1.png" alt="" draggable="false" />
             </button>
-            <button class="control-part stop-button is-lit" type="button" aria-label="右リール停止">
+            <button class="control-part stop-button is-off" type="button" aria-label="右リール停止" disabled>
               <img src="./web/public/control-stop-button-v1.png" alt="" draggable="false" />
             </button>
           </div>
